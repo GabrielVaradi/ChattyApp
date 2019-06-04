@@ -8,7 +8,7 @@ class ChatBar extends Component {
    const onSubmit = event => {
      event.preventDefault();
      const messageInput = event.target.elements.newMessage;
-     this.props.addMessage(messageInput.value);
+     this.props.sendMessage(messageInput.value);
      messageInput.value = "";
  };
 
