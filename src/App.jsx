@@ -1,3 +1,4 @@
+
 import React, {
   Component
 } from 'react';
@@ -13,16 +14,17 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {
-        name: 'Anonymous'
+        name: 'Anonymous',
+        id: null,
+        color: '#000'
       },
-      messages: [],
-      notifications: [],
+        messages: [],
       usersOnline: '',
     }
+    this.webSocket = new WebSocket("ws://localhost:3001")
     this.addMessage = this.addMessage.bind(this);
     this.addUser = this.addUser.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-    this.webSocket = new WebSocket("ws://localhost:3001")
     this.changeUsername = this.changeUsername.bind(this);
     this.showNotification = this.showNotification.bind(this);
 
@@ -32,11 +34,11 @@ class App extends Component {
   changeUsername(username) {
 
     const oldUsername = this.state.currentUser.name;
-    const newUsername = {
-      name: username
-    }
+    const newUsername = username
     this.setState({
-      currentUser: newUsername
+      currentUser: {
+        name: newUsername
+      }
     });
     const notification = {
       oldUsername: oldUsername,
@@ -60,33 +62,42 @@ class App extends Component {
   }
 
   addMessage(message) {
-    const newMessage = JSON.parse(message)
     const oldMessages = this.state.messages;
     const newMessages = [
       ...oldMessages, {
-        username: newMessage.username.name,
-        content: newMessage.text,
-        id: newMessage.id
+        type: 'postMessage',
+        username: message.username.name,
+        content: message.text,
+        id: message.id,
       }
     ];
     this.setState({
-      messages: newMessages
+        messages: newMessages,
+
+
     });
 
   }
 
   showNotification(message) {
-    const data = JSON.parse(message)
-    const notification = `${data.oldUsername} has changed their name to ${data.newUsername.name} `
-    const oldNotifications = this.state.notifications
-    const newNotifications = notification
-        this.setState({
-      notifications: [...oldNotifications, newNotifications]
+    const notificationText = `${message.oldUsername} has changed their name to ${message.newUsername} `
+    const oldNotifications = this.state.messages
+    const newNotifications = [
+      ...oldNotifications, {
+        type: 'postNotification',
+        content: notificationText,
+        id: message.id
+      }
+    ];
+    this.setState({
+
+        messages: newNotifications,
+
+
     });
   }
-
-    addUser(data) {
-        this.setState({
+  addUser(data) {
+    this.setState({
       usersOnline: data.number
     });
   }
@@ -105,13 +116,12 @@ class App extends Component {
       const data = JSON.parse(event.data)
       switch (data.type) {
         case "incomingMessage":
-          this.addMessage(event.data);
+          this.addMessage(data);
           break;
         case "incomingNotification":
-          this.showNotification(event.data);
+          this.showNotification(data);
           break;
         case "clientsConnected":
-        console.log(data);
           this.addUser(data);
           break;
         default:
@@ -120,12 +130,11 @@ class App extends Component {
 
     }
   }
-
 render() {
     return (
     <div>
       <NavBar usersOnline = {this.state.usersOnline}/>
-        <MessageList messages={this.state.messages} notifications={this.state.notifications}/>
+        <MessageList messages={this.state.messages}/>
       <ChatBar currentUser={this.state.currentUser.name} sendMessage={this.sendMessage} changeUsername={this.changeUsername}/>
       </div>
     );

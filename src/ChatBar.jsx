@@ -16,18 +16,16 @@ class ChatBar extends Component {
      event.preventDefault();
      const usernameInput = event.target.elements.newUsername;
      this.props.changeUsername(usernameInput.value);
-     // usernameInput.value = "";
  };
 
     return (
       <footer className="chatbar">
       <form onSubmit={onSubmitName}>
-      <input className="chatbar-username" name="newUsername" defaultValue='Anonymous'/>
+      <input className="chatbar-username" name="newUsername" placeholder='Anonymous'/>
       </form>
       <form onSubmit={onSubmitMessage}>
         <input type='text' name='newMessage' className="chatbar-message" placeholder="Type a message and hit ENTER" />
       </form>
-
       </footer>
     );
   }

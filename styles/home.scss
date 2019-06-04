@@ -78,6 +78,14 @@ body {
       position: fixed;
       right: 0;
       top: 0;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-top: 17px;
+        font-size: 150%;
+      }
     }
 
     .navbar-brand {
@@ -90,4 +98,8 @@ body {
       line-height: 60px;
       padding: 0 10px;
       text-decoration: none;
+    }
+
+    .notification-content {
+      font-style: italic;
     }

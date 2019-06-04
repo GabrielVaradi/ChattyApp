@@ -17,6 +17,10 @@ const wss = new SocketServer({
   server
 });
 
+const getColor = () => {
+  return `#${uuidv4().slice(0, 6)}`;
+};
+
     wss.broadcast = function broadcast(data) {
 
       wss.clients.forEach(function each(client) {
@@ -41,6 +45,7 @@ wss.on('connection', (ws) => {
     wss.broadcast(received)
     }
     else if (received.type === 'postNotification') {
+    received.id = uuidv4()
     received.type = 'incomingNotification'
     wss.broadcast(received)
     }

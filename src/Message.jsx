@@ -8,6 +8,9 @@ class Message extends Component {
       <div className="message">
         <span className="message-username">{this.props.message.username}</span>
         <span className="message-content">{this.props.message.content}</span>
+      <div className="notification">
+      <span className="notification-content">{this.props.notification}</span>
+      </div>
       </div>
       <div className="message system">
 
@@ -19,30 +22,6 @@ class Message extends Component {
 export default Message;
 
 
-//    import React, {Component} from 'react';
-// import Notifications from './Notifications.jsx'
-// class Message extends Component {
-//   render() {
-//     return (
-//       <main className="messages">
-
-//       <div className="message">
-//         <span className="message-username">{this.props.message.username}</span>
-//         <span className="message-content">{this.props.message.content}</span>
-//         <Notifications notifications={this.props.notifications}/>
-//       </div>
-//       <div className="message system">
-
-//       </div>
-//       </main>
-//     );
-//   }
-// }
-// export default Message;
-
-
-
-
-
-
+        // <Notifications notifications={this.props.notifications}/>
+//
 
