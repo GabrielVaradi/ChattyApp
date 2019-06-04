@@ -7,6 +7,7 @@ import { generateRandomId } from "./utils";
 
 
 
+
 class App extends Component {
 
   constructor(props) {
@@ -47,6 +48,16 @@ addMessage(message) {
 
 
 componentDidMount() {
+    const webSocket = new WebSocket("ws://localhost:3001")
+    console.log(webSocket)
+    webSocket.addEventListener('open', function (event) {
+      console.log(webSocket);
+    webSocket.send('Hello Server!');
+});
+    webSocket.addEventListener('error', function (event){
+      console.log(event)
+    })
+    this.setState({webSocket: webSocket})
   console.log("componentDidMount <App />");
   setTimeout(() => {
     console.log("Simulating incoming message");

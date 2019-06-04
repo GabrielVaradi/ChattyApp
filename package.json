@@ -1,5 +1,5 @@
 {
-  "name": "ChattyApp",
+  "name": "chattyapp",
   "version": "1.0.0",
   "description": "Chatting app project",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GabrielVaradi/ChattyApp.git"
+    "url": "git+https://github.com/GabrielVaradi/ChattyApp.git"
   },
   "keywords": [
     "react",
@@ -47,5 +47,6 @@
   "dependencies": {
     "react": "15.4.2",
     "react-dom": "15.4.2"
-  }
+  },
+  "main": "server.js"
 }
