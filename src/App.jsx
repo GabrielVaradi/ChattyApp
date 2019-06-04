@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx'
 import NavBar from './NavBar.jsx'
 import MessageList from './MessageList.jsx'
-import { generateRandomId } from "./utils";
-    const webSocket = new WebSocket("ws://localhost:3001")
 
 
 class App extends Component {
@@ -11,75 +9,63 @@ class App extends Component {
   constructor(props) {
   super(props);
   this.state = {
-  currentUser: {name: "Bob"},
-  messages: [
-    {
-      username: "Bob",
-      content: "Has anyone seen my marbles?",
-      id: 'kappa123'
-    },
-    {
-      username: "Anonymous",
-      content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-      id: 'kappa1234'
-
-    }
-  ]
+  currentUser: {name: 'Anonymous'},
+  messages: []
 }
-// this.addMessage = this.addMessage.bind(this);
+this.addMessage = this.addMessage.bind(this);
 this.sendMessage = this.sendMessage.bind(this);
+this.webSocket = new WebSocket("ws://localhost:3001")
+this.changeUsername = this.changeUsername.bind(this);
+
 
 
 }
+
+changeUsername(username) {
+  console.log(username);
+  console.log(this.state);
+  // const user = JSON.parse(username)
+  const oldUsername = this.state.currentUser.name;
+  const newUsername = {name: username}
+    this.setState({ currentUser: newUsername });
+  }
+
 
 sendMessage(message) {
   const msg = {
     username: this.state.currentUser,
     text: message,
-    id: generateRandomId()
   };
 
-  webSocket.send(JSON.stringify(msg));
+  this.webSocket.send(JSON.stringify(msg));
 
 }
 
+addMessage(message) {
+  const newMessage = JSON.parse(message)
+  const oldMessages = this.state.messages;
+  const newMessages = [
+    ...oldMessages,
+     { username: newMessage.username.name, content: newMessage.text, id: newMessage.id }
+  ];
+    this.setState({ messages: newMessages });
 
-
-// addMessage(message) {
-
-//     webSocket.send(message);
-
-//   const oldMessages = this.state.messages;
-//   const newMessages = [
-//     ...oldMessages,
-//      { username: this.state.currentUser.name, content: message, id: generateRandomId() }
-//   ];
-//     this.setState({ messages: newMessages });
-
-//   }
+  }
 
 
 componentDidMount() {
-    webSocket.addEventListener('open', function (event) {
+  this.webSocket.addEventListener('open', function (event) {
 });
-    webSocket.addEventListener('error', function (event){
+  this.webSocket.addEventListener('error', function (event){
       console.log(event)
     })
-    this.setState({webSocket: webSocket})
+  this.setState({webSocket: this.webSocket})
   console.log("componentDidMount <App />");
-  setTimeout(() => {
-    console.log("Simulating incoming message");
-    const newMessage = {id: 3, username: "Obi-Wan Kenobi", content: "Hello there!"};
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages})
-  }, 1500);
-    setTimeout(() => {
-    console.log("Simulating incoming message");
-    const newMessage = {id: 66, username: "Grievous", content: "General Kenobi!"};
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages})
-  }, 3000);
+  this.webSocket.onmessage = (event) => {
+    this.addMessage(event.data);
 }
+}
+
 
 
 
@@ -88,7 +74,7 @@ componentDidMount() {
     <div>
       <NavBar/>
         <MessageList messages={this.state.messages}/>
-      <ChatBar currentUser={this.state.currentUser.name} sendMessage={this.sendMessage}/>
+      <ChatBar currentUser={this.state.currentUser.name} sendMessage={this.sendMessage} changeUsername={this.changeUsername}/>
       </div>
     );
   }
