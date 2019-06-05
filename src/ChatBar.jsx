@@ -18,6 +18,8 @@ class ChatBar extends Component {
      this.props.changeUsername(usernameInput.value);
  };
 
+
+
     return (
       <footer className="chatbar">
       <form onSubmit={onSubmitName}>

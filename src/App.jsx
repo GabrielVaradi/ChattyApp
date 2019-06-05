@@ -25,6 +25,8 @@ class App extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.showNotification = this.showNotification.bind(this);
+    this.userConnect = this.userConnect.bind(this);
+
 
 
   }
@@ -35,7 +37,9 @@ class App extends Component {
     const newUsername = username
     this.setState({
       currentUser: {
-        name: newUsername
+        name: newUsername,
+        id: this.state.currentUser.id,
+        color: this.state.currentUser.color,
       }
     });
     const notification = {
@@ -52,7 +56,8 @@ class App extends Component {
     const msg = {
       username: this.state.currentUser,
       text: message,
-      type: 'postMessage'
+      type: 'postMessage',
+      color: this.state.currentUser.color,
     };
 
     this.webSocket.send(JSON.stringify(msg));
@@ -66,7 +71,8 @@ class App extends Component {
         type: 'postMessage',
         username: message.username.name,
         content: message.text,
-        id: message.id
+        id: message.id,
+        color: message.color,
       }
     ];
     this.setState({
@@ -100,6 +106,17 @@ class App extends Component {
     });
   }
 
+  userConnect(data) {
+    console.log(data);
+    this.setState({
+      currentUser: {
+        name: data.username,
+        id: data.id,
+        color: data.color,
+      }
+    });
+  }
+
 
   componentDidMount() {
     this.webSocket.addEventListener('open', function(event) {});
@@ -119,6 +136,9 @@ class App extends Component {
         case "incomingNotification":
           this.showNotification(data);
           break;
+        case "incomingClientInfo":
+          this.userConnect(data)
+          break;
         case "clientsConnected":
           this.addUser(data);
           break;
@@ -133,7 +153,7 @@ render() {
     <div>
       <NavBar usersOnline = {this.state.usersOnline}/>
         <MessageList messages={this.state.messages}/>
-      <ChatBar currentUser={this.state.currentUser.name} sendMessage={this.sendMessage} changeUsername={this.changeUsername}/>
+      <ChatBar currentUser={this.state.currentUser.name} color={this.state.currentUser.color} sendMessage={this.sendMessage} changeUsername={this.changeUsername}/>
       </div>
     );
   }
