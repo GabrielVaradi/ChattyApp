@@ -1,37 +1,33 @@
-   import React, {Component} from 'react';
+import React, {Component} from 'react';
 
-
-
-class ChatBar extends Component {
-  render() {
-
+//Display the chat bar
+function ChatBar({sendMessage, changeUsername}){
+   //On submit, call the sendMessage function (send message to the server)
    const onSubmitMessage = event => {
      event.preventDefault();
      const messageInput = event.target.elements.newMessage;
-     this.props.sendMessage(messageInput.value);
+     sendMessage(messageInput.value);
      messageInput.value = "";
  };
-
+   //On submit, call the changeUsername function (change the username)
     const onSubmitName = event => {
      event.preventDefault();
      const usernameInput = event.target.elements.newUsername;
-     this.props.changeUsername(usernameInput.value);
+     changeUsername(usernameInput.value);
  };
 
-
-
-    return (
-      <footer className="chatbar">
+  return (
+    <footer className="chatbar">
       <form onSubmit={onSubmitName}>
-      <input className="chatbar-username" name="newUsername" placeholder='Anonymous'/>
-      </form>
-      <form onSubmit={onSubmitMessage}>
-        <input type='text' name='newMessage' className="chatbar-message" placeholder="Type a message and hit ENTER" />
-      </form>
-      </footer>
+        <input className="chatbar-username" name="newUsername" placeholder='Anonymous'/>
+     </form>
+     <form onSubmit={onSubmitMessage}>
+       <input type='text' name='newMessage' className="chatbar-message" placeholder="Type a message and hit ENTER" />
+     </form>
+     </footer>
     );
-  }
-}
+
+};
 
 
 

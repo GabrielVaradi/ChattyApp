@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import Message from './Message.jsx'
+//Import child JSX file
+import Message from './Message.jsx';
 
-class MessageList extends Component {
-  render() {
-    const messageItems = this.props.messages.map(message => {
+//Loops through the message array and sends the information to the child component Message
+function MessageList({messages}) {
+  const messageItems = messages.map(message => {
         return (
-      <Message key = {message.id} message={message} />
+      <Message key={message.id} message={message} />
         )
 
     });
@@ -14,6 +15,5 @@ class MessageList extends Component {
      <div> {messageItems} </div>
    </div>
     );
-  }
-}
+};
 export default MessageList;

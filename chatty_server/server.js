@@ -17,23 +17,21 @@ const wss = new SocketServer({
   server
 });
 
-const clientList = []
+const clientList = [];
 
+//Create a random color
 const getColor = () => {
   return `#${uuidv4().slice(0, 6)}`;
 };
 
-    wss.broadcast = function broadcast(data) {
+//Broadcasts the message to all users
+wss.broadcast = function broadcast(data) {
+  wss.clients.forEach(function each(client) {
+    client.send(JSON.stringify(data));
+  });
+};
 
-      wss.clients.forEach(function each(client) {
-        //if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(data));
-
-
-      });
-    };
-
-
+//Add a client to the client list
 const addClient = (client, clientInfo) => {
   clientList[clientInfo.id] = {
     id: clientInfo.id,
@@ -44,6 +42,7 @@ const addClient = (client, clientInfo) => {
   client.id = clientInfo.id;
 };
 
+//Add client info and sends the info to the front-end
 const connectClient = (client, nbClients) => {
   const clientId = uuidv4();
 
@@ -64,33 +63,44 @@ const connectClient = (client, nbClients) => {
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  //When a client connect, give him an id, color and name
   connectClient(ws, wss.clients.size);
-  console.log(clientList);
-  wss.broadcast({type: 'clientsConnected', number: wss.clients.size})
+  //Send the number of connected clients to all users
+  wss.broadcast({
+    type: 'clientsConnected',
+    number: wss.clients.size
+  });
+  //When receiving a message from the font-end
   ws.on('message', (message) => {
-    const received = JSON.parse(message)
-    if(received.type === 'postMessage'){
-    received.id = uuidv4()
-    received.type = 'incomingMessage'
-    wss.broadcast(received)
+    const received = JSON.parse(message);
+    //If its a message, give it an id, a type and broadcast it
+    if (received.type === 'postMessage') {
+      received.id = uuidv4();
+      received.type = 'incomingMessage';
+      wss.broadcast(received);
     }
+    //If its a notification, give it an id, a type and broadcast it
     else if (received.type === 'postNotification') {
-    received.id = uuidv4()
-    received.type = 'incomingNotification'
-    wss.broadcast(received)
+      received.id = uuidv4();
+      received.type = 'incomingNotification';
+      wss.broadcast(received);
     }
+    //If its a username, give it an id, a color, a type and broadcast it
     else if (received.type === 'postUsername') {
-    received.id = uuidv4()
-    received.color = getColor()
-    received.type = 'incomingUsername'
-    wss.broadcast(received)
+      received.id = uuidv4();
+      received.color = getColor();
+      received.type = 'incomingUsername';
+      wss.broadcast(received);
     }
 
   })
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
-    wss.broadcast({type: 'clientsConnected', number: wss.clients.size})
-    console.log('Client disconnected')});
-
+    //Send the number of connected clients to all users
+    wss.broadcast({
+      type: 'clientsConnected',
+      number: wss.clients.size
+    });
+    console.log('Client disconnected');
+  });
 });
-
