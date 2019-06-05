@@ -1,45 +1,22 @@
-React Boilerplate
-=====================
+# ChattyApp Project
 
-A minimal and light dev environment for ReactJS.
+ChattyApp is a single-page chat application that uses REACT.
 
-### Usage
+## Final Product
 
-Clone the boilerplate and create your own git repo.
+!["Example of chat"](https://github.com/GabrielVaradi/ChattyApp/blob/master/docs/chat-example.png)
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
 
-Install the dependencies and start the server.
+### Getting Started
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
+Install all dependencies (using the npm install command).
+Run the server in a terminal in the chatty-server folder using npm start
+Run the front-end in another terminal in the chattyApp folder using npm start
 
 ### Dependencies
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+- React
+- Webpack
+- [babel-loader](https://github.com/babel/babel-loader)
+- [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+
