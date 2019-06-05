@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 //Displays the nav-bar
-function NavBar({usersOnline, currentUser}) {
+const NavBar = ({usersOnline, currentUser}) => {
   const userStyle = {
     color: currentUser.color,
   };

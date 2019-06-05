@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 //Display the messages
-function Message({message}) {
+const Message = ({message}) => {
   const {color, content, id, type, username} = message
   //Styling for the notifications
   const notificationStyle = {
@@ -22,24 +22,22 @@ function Message({message}) {
   //RegEx to match an URL ending with jpb, gif or png
   const matchImage = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
   //If the message type is postMessage
-  const isMessage = type === 'postMessage' ? messageStyle : null;
-  //If the message type is postNotification
-  const isNotification = type === 'postNotification' ? notificationStyle : null;
-
-    return (
-      <main className="messages">
-
+  const isMessage = type === 'postMessage' ?
+    <div>
       <div className="message">
-        <span style={isMessage} className="message-username">{username}</span>
-        <span style={isNotification} className="message-content">{content.match(matchImage) ? <span>{content.replace(matchImage, '')}<img style={imageStyle} src={content.match(matchImage)}/></span> : content}</span>
-      <div className="notification">
+        <span style={messageStyle} className="message-username">{username}</span>
+        <span className="message-content">{content}</span>
       </div>
-      </div>
+    </div>
+  :
+   <div className="notification">
       <div className="message system">
-
+        <span style={notificationStyle} className="message-content">{content.match(matchImage) ? <span>{content.replace(matchImage, '')}<img style={imageStyle} src={content.match(matchImage)}/></span> : content}</span>
       </div>
-      </main>
-    );
-}
+    </div>
+
+return isMessage
+};
+
 export default Message;
 

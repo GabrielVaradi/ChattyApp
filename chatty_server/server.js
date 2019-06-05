@@ -73,27 +73,28 @@ wss.on('connection', (ws) => {
   //When receiving a message from the font-end
   ws.on('message', (message) => {
     const received = JSON.parse(message);
-    //If its a message, give it an id, a type and broadcast it
-    if (received.type === 'postMessage') {
-      received.id = uuidv4();
-      received.type = 'incomingMessage';
-      wss.broadcast(received);
-    }
-    //If its a notification, give it an id, a type and broadcast it
-    else if (received.type === 'postNotification') {
-      received.id = uuidv4();
-      received.type = 'incomingNotification';
-      wss.broadcast(received);
-    }
-    //If its a username, give it an id, a color, a type and broadcast it
-    else if (received.type === 'postUsername') {
-      received.id = uuidv4();
-      received.color = getColor();
-      received.type = 'incomingUsername';
-      wss.broadcast(received);
-    }
-
+    received.id = uuidv4();
+    switch (received.type) {
+      //If its a message, give it an id, a type and broadcast it
+      case "postMessage":
+        received.type = 'incomingMessage';
+        wss.broadcast(received);
+        break;
+      //If its a notification, give it an id, a type and broadcast it
+      case "postNotification":
+        received.type = 'incomingNotification';
+        wss.broadcast(received);
+        break;
+      //If its a username, give it an id, a color, a type and broadcast it
+      case "postUsername":
+        received.color = getColor();
+        received.type = 'incomingUsername';
+        wss.broadcast(received);
+      default:
+        throw new Error("Unknown event type " + data.type);
+    };
   })
+
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     //Send the number of connected clients to all users
