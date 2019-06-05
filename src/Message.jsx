@@ -26,13 +26,13 @@ const Message = ({message}) => {
     <div>
       <div className="message">
         <span style={messageStyle} className="message-username">{username}</span>
-        <span className="message-content">{content}</span>
+        <span className="message-content">{content.match(matchImage) ? <span>{content.replace(matchImage, '')}<img style={imageStyle} src={content.match(matchImage)}/></span> : content}</span>
       </div>
     </div>
   :
    <div className="notification">
       <div className="message system">
-        <span style={notificationStyle} className="message-content">{content.match(matchImage) ? <span>{content.replace(matchImage, '')}<img style={imageStyle} src={content.match(matchImage)}/></span> : content}</span>
+        <span style={notificationStyle} className="message-content">{content}</span>
       </div>
     </div>
 
