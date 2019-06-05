@@ -79,11 +79,17 @@ body {
       right: 0;
       top: 0;
 
-      div {
+      .currentUser {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        padding-top: 17px;
+        font-size: 150%;
+      }
+
+      .usersOnline {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
         font-size: 150%;
       }
     }

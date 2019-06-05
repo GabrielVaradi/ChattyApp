@@ -13,7 +13,9 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {
-        name: 'Anonymous'
+        name: 'Anonymous',
+        color: '#000',
+        id: '0'
       },
       messages: [],
       usersOnline: '',
@@ -134,7 +136,7 @@ class App extends Component {
   render() {
     return (
     <div>
-      <NavBar usersOnline = {this.state.usersOnline}/>
+      <NavBar usersOnline={this.state.usersOnline} currentUser={this.state.currentUser}/>
         <MessageList messages={this.state.messages}/>
       <ChatBar sendMessage={this.sendMessage} changeUsername={this.changeUsername}/>
       </div>
