@@ -130,7 +130,7 @@ class App extends Component {
 
     };
   };
-
+  //Renders the page
   render() {
     return (
     <div>
