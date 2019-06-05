@@ -17,6 +17,8 @@ const wss = new SocketServer({
   server
 });
 
+const clientList = []
+
 const getColor = () => {
   return `#${uuidv4().slice(0, 6)}`;
 };
@@ -31,11 +33,39 @@ const getColor = () => {
       });
     };
 
+
+const addClient = (client, clientInfo) => {
+  clientList[clientInfo.id] = {
+    id: clientInfo.id,
+    username: clientInfo.username,
+    color: clientInfo.color,
+  };
+
+  client.id = clientInfo.id;
+};
+
+const connectClient = (client, nbClients) => {
+  const clientId = uuidv4();
+
+  const infoMsg = {
+    id: clientId,
+    username: `Anonymous${nbClients}`,
+    color: getColor(),
+    type: 'incomingClientInfo',
+  };
+
+  addClient(client, infoMsg);
+
+  client.send(JSON.stringify(infoMsg));
+};
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  connectClient(ws, wss.clients.size);
+  console.log(clientList);
   wss.broadcast({type: 'clientsConnected', number: wss.clients.size})
   ws.on('message', (message) => {
     const received = JSON.parse(message)
@@ -47,6 +77,12 @@ wss.on('connection', (ws) => {
     else if (received.type === 'postNotification') {
     received.id = uuidv4()
     received.type = 'incomingNotification'
+    wss.broadcast(received)
+    }
+    else if (received.type === 'postUsername') {
+    received.id = uuidv4()
+    received.color = getColor()
+    received.type = 'incomingUsername'
     wss.broadcast(received)
     }
 

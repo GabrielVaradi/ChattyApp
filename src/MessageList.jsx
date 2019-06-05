@@ -5,18 +5,9 @@ class MessageList extends Component {
   render() {
     const notifications = this.props.notifications
     const messageItems = this.props.messages.map(message => {
-      if(message.type === 'postMessage'){
         return (
-      <Message key = {message.id} message={message} notification=''/>
+      <Message key = {message.id} message={message} />
         )
-      }
-      else if (message.type === 'postNotification'){
-        return (
-      <Message key = {message.id} message='' notification={message.content}/>
-        )
-
-      }
-
 
     });
     return (

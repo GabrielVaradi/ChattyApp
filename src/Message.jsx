@@ -2,14 +2,18 @@
 
 class Message extends Component {
   render() {
+
+    const notificationStyle = {
+      fontStyle: 'italic',
+    };
+
     return (
       <main className="messages">
 
       <div className="message">
         <span className="message-username">{this.props.message.username}</span>
-        <span className="message-content">{this.props.message.content}</span>
+        <span style={this.props.message.type === 'postNotification' ? notificationStyle: null} className="message-content">{this.props.message.content}</span>
       <div className="notification">
-      <span className="notification-content">{this.props.notification}</span>
       </div>
       </div>
       <div className="message system">
