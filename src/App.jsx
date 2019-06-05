@@ -107,7 +107,6 @@ class App extends Component {
   }
 
   userConnect(data) {
-    console.log(data);
     this.setState({
       currentUser: {
         name: data.username,

@@ -16,7 +16,7 @@ class Message extends Component {
 
       <div className="message">
         <span style={this.props.message.type === 'postMessage' ? messageStyle: null} className="message-username">{this.props.message.username}</span>
-        <span style={this.props.message.type === 'postNotification' ? notificationStyle: null} className="message-content">{this.props.message.content}</span>
+        <span style={this.props.message.type === 'postNotification' ? notificationStyle: null} className="message-content">{this.props.message.content.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g) ? <img style={{maxWidth: '60%', maxHeight: '60%'}} src={this.props.message.content} /> : this.props.message.content}</span>
       <div className="notification">
       </div>
       </div>
@@ -28,8 +28,4 @@ class Message extends Component {
   }
 }
 export default Message;
-
-
-        // <Notifications notifications={this.props.notifications}/>
-//
 
