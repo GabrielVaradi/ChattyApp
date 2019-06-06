@@ -89,13 +89,6 @@ class App extends Component {
 
   };
 
-  //Updates the users count in the state
-  numberOfUser = (data) => {
-    this.setState({
-      usersOnline: data.number
-    });
-  };
-
   //Sets the current user info in the state
   userConnect = (data) => {
     this.setState({
@@ -103,7 +96,8 @@ class App extends Component {
         name: data.username,
         id: data.id,
         color: data.color,
-      }
+      },
+      usersOnline: data.number
     });
   };
 
@@ -128,9 +122,6 @@ class App extends Component {
           break;
         case "incomingClientInfo":
           this.userConnect(data);
-          break;
-        case "clientsConnected":
-          this.numberOfUser(data);
           break;
         default:
           throw new Error("Unknown event type " + data.type);

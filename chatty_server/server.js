@@ -51,6 +51,7 @@ const connectClient = (client, nbClients) => {
     username: `Anonymous${nbClients}`,
     color: getColor(),
     type: 'incomingClientInfo',
+    number: wss.clients.size
   };
 
   addClient(client, infoMsg);
@@ -66,10 +67,7 @@ wss.on('connection', (ws) => {
   //When a client connect, give him an id, color and name
   connectClient(ws, wss.clients.size);
   //Send the number of connected clients to all users
-  wss.broadcast({
-    type: 'clientsConnected',
-    number: wss.clients.size
-  });
+
   //When receiving a message from the font-end
   ws.on('message', (message) => {
     const received = JSON.parse(message);
