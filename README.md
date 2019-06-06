@@ -10,8 +10,8 @@ ChattyApp is a single-page chat application that uses REACT.
 ### Getting Started
 
 - Install all dependencies (using the npm install command).
-- Run the server in a terminal in the chatty-server folder using npm start
-- Run the front-end in another terminal in the chattyApp folder using npm start
+- In the chatty-server folder, run the server using npm start
+- Open another terminal and in the chattyApp folder, run the front-end using npm start
 
 ### Dependencies
 
